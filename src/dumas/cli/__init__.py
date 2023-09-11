@@ -3,6 +3,7 @@
 # SPDX-License-Identifier: MIT
 import sys
 from pathlib import Path
+from typing import Optional
 
 import click
 
@@ -17,13 +18,17 @@ def dumas():
 
 
 @dumas.command()
-@click.option("--output-file", metavar="OUTPUT_FILE", type=Path, required=True, help="Output file")
+@click.option("--output-file", metavar="OUTPUT_FILE", type=click.File(mode="w" ), help="Output file", default = "-")
 @click.argument("input_file", type=Path)
-def render_file(input_file: Path, output_file: Path):
+def render_file(input_file: Path, output_file):
     """
     writes [INPUT FILE] into --out file
     """
-    output_file.write_text(renderer.render_file(input_file))
+
+
+
+
+    output_file.write(renderer.render_file(input_file))
 
 
 @dumas.command()

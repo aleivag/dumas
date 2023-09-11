@@ -16,8 +16,60 @@
 pip install dumas
 ```
 
+## Using it (prepare your doc)
 
-## Using it (shell)
+using dumas on a regular markdown file has very little change, we use [marko](https://github.com/frostming/marko) under the hood
+and marko is opinionated on what gets output from a markdown document. but the power of dumas start when you use the dumas blocks,
+right now there is only the "**dumas fenced code block**" (the one with the backticks). Just add to your document this
+
+
+```markdown
+
+\```dumas[python]
+a = 1
+def foo(o):
+   return 2**o
+
+foo(a+1)
+
+\```
+
+```
+
+and this will turn the content into an ipython (jupyter notebook) cell.
+
+## Using it (cli)
+
+then execute:
+
+```shell
+$ dumas render-file example.md
+```
+
+and this will output to stdout:
+
+```dumas[python]
+a = 1
+def foo(o):
+   return 2**o
+
+foo(a+1)
+
+```
+
+
+you can write to specific file
+
+```shell
+$ dumas render-file example.md --output-file  /tmp/myfile.md
+```
+
+or render the entire files of a dir into another
+
+
+```shell
+$ dumas render-dir docs/ --output-dir  publish/
+```
 
 ## Using it (api)
 

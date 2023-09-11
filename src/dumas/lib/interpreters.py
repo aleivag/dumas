@@ -28,10 +28,13 @@ class Python(Interpreter):
         out.raise_error()
         self.shell.execution_count += 1
 
-        in_ps1 = f"In [{execution_count}]: "
+        in_ps1     = f"In [{execution_count}]: "
+        len_in_ps1 = len(in_ps1)
+        indent_ps1 = " " * (len_in_ps1 - (1 + 3 + 1)) + "...: "
+
         out_ps1 = f"Out[{execution_count}]: "
 
-        len_in_ps1 = len(in_ps1)
+
 
         if out.success:
             if out.result:
@@ -44,7 +47,8 @@ class Python(Interpreter):
         module = cst.parse_module(code)
 
         header = module.with_changes(body=[]).code
-        body = in_ps1 + textwrap.indent(module.with_changes(header=[]).code.strip(), prefix=" "*len_in_ps1)[len_in_ps1:]
+        body = in_ps1 + textwrap.indent(
+            module.with_changes(header=[]).code.strip(), prefix=indent_ps1, predicate=lambda n: True)[len_in_ps1:]
 
 
         pattern = r'^```'
