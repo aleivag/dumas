@@ -50,10 +50,14 @@ and this will output to stdout:
 ```python
 
 In [1]: a = 1
-   ...: def foo(o):
-   ...:    return 2**o
    ...: 
-   ...: foo(a+1)
+   ...: 
+   ...: def foo(o):
+   ...:     return 2**o
+   ...: 
+   ...: 
+   ...: foo(a + 1)
+
 
 Out[1]: 4
 ```
@@ -81,7 +85,8 @@ You could use `dumas` as part of your own workflow/program
 In [2]: from dumas.lib.renderer import render_text, render_file
    ...: import textwrap
    ...: 
-   ...: MD_TEXT = textwrap.dedent("""
+   ...: MD_TEXT = textwrap.dedent(
+   ...:     """
    ...:     This is a regular MD
    ...:     ====================
    ...:     
@@ -93,12 +98,14 @@ In [2]: from dumas.lib.renderer import render_text, render_file
    ...:     x**2
    ...:     
    ...:     ```
-   ...: """)
+   ...: """
+   ...: )
 ```
 
 ```python
 
 In [3]: MD_TEXT
+
 
 Out[3]: 
 This is a regular MD
@@ -118,6 +125,7 @@ x**2
 
 In [4]: render_text(MD_TEXT)
 
+
 Out[4]: 
 # This is a regular MD
 
@@ -125,9 +133,10 @@ with some `funny text` and some text
 
 \```python
 
-In [1]: x = 1+1
+In [1]: x = 1 + 1
    ...: 
    ...: x**2
+
 
 Out[1]: 4
 \```

@@ -29,6 +29,7 @@ dependencies = [
   "marko",
   "ipython",
   "libcst",
+  "black",
 ]
 
 [project.urls]

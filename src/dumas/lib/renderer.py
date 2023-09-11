@@ -6,6 +6,8 @@ from marko.md_renderer import MarkdownRenderer
 
 from dumas.lib.interpreters import interpreters
 
+
+
 FENCED_CODE_LANG_REGEX = re.compile(r"dumas\[(?P<interpreter_name>[\d\w_]+)(@(?P<interpreter_id>[\w\d_-]+))?\]")
 
 
@@ -18,6 +20,7 @@ class Renderer(MarkdownRenderer):
 
         if not match:
             return super().render_fenced_code(element)
+
         match_dict = match.groupdict()
         interpreter_id = match_dict.get("interpreter_id", "default")
         interpreter_name = match_dict["interpreter_name"]
