@@ -10,7 +10,6 @@ from marko.block import FencedCode
 from black import format_str, Mode as black_Mode
 
 
-
 class Interpreter:
     def __init__(self, interpreter_id: str) -> None:
         self.interpreter_id = interpreter_id
@@ -23,7 +22,6 @@ class Python(Interpreter):
     def __init__(self, interpreter_id: str) -> None:
         super().__init__(interpreter_id)
         self.shell = InteractiveShell()
-
 
     def run(self, code, black: bool = True):
         execution_count = self.shell.execution_count
@@ -61,7 +59,7 @@ class Python(Interpreter):
         # Use re.sub() to replace the matches
         content = re.sub(pattern, replacement, f"{header}{render_body}{result}", flags=re.MULTILINE)
 
-        return FencedCode(("python", "", content))
+        yield FencedCode(("python", "", content))
 
 
 interpreters: Dict[str, Type[Interpreter]] = {

@@ -7,8 +7,14 @@ from marko.md_renderer import MarkdownRenderer
 from dumas.lib.interpreters import interpreters
 
 
-
 FENCED_CODE_LANG_REGEX = re.compile(r"dumas\[(?P<interpreter_name>[\d\w_]+)(@(?P<interpreter_id>[\w\d_-]+))?\]")
+
+
+class RenderError(Exception):
+    def __init__(self, msg, element, raw):
+        super().__init__(msg)
+        self.element = element
+        self.raw = raw
 
 
 class Renderer(MarkdownRenderer):
@@ -27,7 +33,16 @@ class Renderer(MarkdownRenderer):
 
         interpreter = interpreters[interpreter_name](interpreter_id)
 
-        return self.render(interpreter.run(self.render_raw_text(element.children[0]), **{}))
+        try:
+            result = [self.render(r) for r in interpreter.run(self.render_raw_text(element.children[0]), **{})]
+        except Exception as e:
+            raise RenderError(
+                f"Fail to process element \n{super().render_fenced_code(element)}",
+                element,
+                raw=super().render_fenced_code(element),
+            ) from e
+
+        return "".join(result)
 
 
 def render_text(text, *, renderer=Renderer) -> str:
@@ -35,4 +50,9 @@ def render_text(text, *, renderer=Renderer) -> str:
 
 
 def render_file(path_to_file: Path, *, renderer=Renderer) -> str:
-    return render_text(path_to_file.read_text(), renderer=renderer)
+    try:
+        return render_text(path_to_file.read_text(), renderer=renderer)
+    except RenderError as e:
+        raise RenderError(
+            f"Fail to process file {path_to_file}'s element \n{e.raw}", element=e.element, raw=e.raw
+        ) from None
