@@ -18,9 +18,9 @@ pip install dumas
 
 ## Using it (prepare your doc)
 
-Using dumas on any markdown file will leave the file almost unchanged,
+Using dumas on any markdown file will leave the file almost unchanged, 
 we use [marko](https://github.com/frostming/marko) under the hood
-and marko is opinionated on what gets output from a markdown document.
+and marko is opinionated on what gets output from a markdown document. 
 But the power of dumas start when you use the dumas blocks,
 right now there is only the "**dumas fenced code block**" (the one with the backticks). Just add to your document this
 
@@ -80,66 +80,35 @@ $ dumas render-dir docs/ --output-dir  publish/
 
 You could use `dumas` as part of your own workflow/program
 
-```python
+```dumas[python]
 # First import the render functions
 
-
-In [1]: import textwrap
-   ...: from dumas.lib.renderer import render_text, render_file
-   ...: 
-   ...: 
-   ...: MD_TEXT = textwrap.dedent(
-   ...:     """
-   ...:         This is a regular MD
-   ...:         ====================
-   ...:         
-   ...:         with some `funny text` and some text
-   ...:         
-   ...:         ```dumas[python@readme]
-   ...:         x = 1+1
-   ...:         
-   ...:         x**2
-   ...:         
-   ...:         ```
-   ...:     """
-   ...: )
-   ...: 
-   ...: MD_TEXT
+import textwrap
+from dumas.lib.renderer import render_text, render_file
 
 
-Out[1]: 
-This is a regular MD
-====================
+MD_TEXT = textwrap.dedent(
+        """
+        This is a regular MD
+        ====================
+        
+        with some `funny text` and some text
+        
+        ```dumas[python@readme]
+        x = 1+1
+        
+        x**2
+        
+        ```
+    """
+)
 
-with some `funny text` and some text
+MD_TEXT
 
-\```dumas[python@readme]
-x = 1+1
-
-x**2
-
-\```
 ```
 
-```python
-
-In [2]: render_text(MD_TEXT)
-
-
-Out[2]: 
-# This is a regular MD
-
-with some `funny text` and some text
-
-\```python
-
-In [1]: x = 1 + 1
-   ...: 
-   ...: x**2
-
-
-Out[1]: 4
-\```
+```dumas[python]
+render_text(MD_TEXT)
 ```
 
 # Interpreters

@@ -7,7 +7,7 @@ name = "dumas"
 dynamic = ["version"]
 description = ''
 readme = "README.md"
-requires-python = ">=3.7"
+requires-python = ">=3.10"
 license = "MIT"
 keywords = []
 authors = [
@@ -16,11 +16,9 @@ authors = [
 classifiers = [
   "Development Status :: 4 - Beta",
   "Programming Language :: Python",
-  "Programming Language :: Python :: 3.7",
-  "Programming Language :: Python :: 3.8",
-  "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: Implementation :: CPython",
   "Programming Language :: Python :: Implementation :: PyPy",
 ]
@@ -30,6 +28,7 @@ dependencies = [
   "ipython",
   "libcst",
   "black",
+  "pydantic",
 ]
 
 [project.urls]
@@ -60,6 +59,10 @@ cov = [
   "cov-report",
 ]
 
+docs = [
+  "dumas render-dir src/docs --output-dir ."
+]
+
 [[tool.hatch.envs.all.matrix]]
 python = ["3.7", "3.8", "3.9", "3.10", "3.11"]
 
@@ -73,12 +76,12 @@ dependencies = [
 [tool.hatch.envs.lint.scripts]
 typing = "mypy --install-types --non-interactive {args:src/dumas tests}"
 style = [
-  "ruff {args:.}",
+  "ruff check {args:.}",
   "black --check --diff {args:.}",
 ]
 fmt = [
   "black {args:.}",
-  "ruff --fix {args:.}",
+  "ruff check --fix {args:.}",
   "style",
 ]
 all = [
@@ -130,6 +133,8 @@ ignore = [
   "S105", "S106", "S107",
   # Ignore complexity
   "C901", "PLR0911", "PLR0912", "PLR0913", "PLR0915",
+  # ignore trailing whitespace
+  "W291", "W293"
 ]
 unfixable = [
   # Don't touch unused imports

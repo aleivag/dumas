@@ -2,8 +2,8 @@
 #
 # SPDX-License-Identifier: MIT
 import sys
+import traceback
 from pathlib import Path
-from typing import Optional
 
 import click
 
@@ -13,8 +13,7 @@ from dumas.lib import renderer
 
 @click.group(context_settings={"help_option_names": ["-h", "--help"]}, invoke_without_command=True)
 @click.version_option(version=__version__, prog_name="dumas")
-def dumas():
-    ...
+def dumas(): ...
 
 
 @dumas.command()
@@ -42,13 +41,19 @@ def render_dir(input_dir: Path, output_dir: Path, check: bool):
     output_dir = output_dir.resolve()
 
     for f in input_dir.glob("**/*.md"):
-        output_text = renderer.render_file(f)
+        try:
+            output_text = renderer.render_file(f)
+        except renderer.RenderError as e:
+            print(e)
+            print(*traceback.format_exception(e.error, limit=1))
+            return -1
         finalf = output_dir / f.relative_to(input_dir)
         if check:
             if finalf.read_text() != output_text:
                 click.echo(f"file {f} needs to be renderer", err=True)
                 sys.exit(-1)
         else:
+            finalf.parent.mkdir(parents=True, exist_ok=True)
             finalf.write_text(output_text)
 
     if check:
