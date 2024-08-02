@@ -14,6 +14,8 @@ extends="config1"
 apply_black=true
 split_render=true
 
+[dumas.interpreter.python.config.config3]
+extends="config2"
 
 ```
 
@@ -28,6 +30,15 @@ assert __dumas_config__.split_render, __dumas_config__
 assert __dumas_interpreter__.interpreter_id == "int1", __dumas_interpreter__.instance_id
 assert __dumas_config__.apply_black, __dumas_config__
 assert __dumas_config__.split_render, __dumas_config__
+```
+
+
+```dumas[python@int1]?apply_black=false#config3
+assert __dumas_config__.apply_black == False, __dumas_config__
+```
+
+```dumas[python@int1]#config3
+assert __dumas_config__.apply_black, __dumas_config__
 ```
 
     """
